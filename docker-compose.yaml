@@ -1,0 +1,24 @@
+version: '3'
+
+# service description
+services:
+
+  # cloudflare tunnel
+  cloudflare-tunnel:
+    image: cloudflare/cloudflared
+    #build:
+    #  context: ./src
+    #  dockerfile: ./Dockerfile
+    container_name: cloudflare-tunnel
+    hostname: cloudflare-tunnel
+    restart: unless-stopped
+    network_mode: "bridge"
+    command: tunnel run
+    volumes:
+      - ./localtime:/etc/localtime:ro
+      - ./config/hosts:/etc/hosts
+    environment:
+      - "TUNNEL_TOKEN=YOUR TOKEN HERE"
+    labels:
+      # enbale watchtower updates
+      - "com.centurylinklabs.watchtower.enable=true"
